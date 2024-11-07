@@ -5,7 +5,7 @@
 #include "memlayout.h"
 #include "spinlock.h"
 #include "proc.h"
-
+#include "kernel/sysinfo.h"
 uint64
 sys_exit(void)
 {
@@ -90,4 +90,23 @@ sys_uptime(void)
   xticks = ticks;
   release(&tickslock);
   return xticks;
+}
+uint64
+sys_trace(void)
+{
+  argint(0, &myproc()->trace);
+
+  return 0;
+}
+uint64 sys_sysinfo(void)
+{
+  uint64 dst_virtual;
+  argaddr(0, &dst_virtual);
+  struct sysinfo info;
+  info.freemem = count_freemem();
+  info.nproc = count_procs();
+  // We need to copy data to a given virtual address, so copyout() is needed. 
+  if(copyout(myproc()->pagetable, dst_virtual, (char *)&info, sizeof(struct sysinfo)) < 0)
+    return -1;
+  return 0;
 }

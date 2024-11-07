@@ -90,4 +90,14 @@ kalloc(void)
 #endif
   return (void*)r;
 }
-
+uint64 count_freemem(void)
+{
+  struct run *current = kmem.freelist;
+  uint64 ans = 0;
+  while(current)
+  {
+    ans += 4096;
+    current = current->next;
+  }
+  return ans;
+}
