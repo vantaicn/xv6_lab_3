@@ -91,13 +91,14 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
 uint64
 sys_trace(void)
 {
-  argint(0, &myproc()->trace);
-
+  argint(0, &myproc()->traced);
   return 0;
 }
+
 uint64 sys_sysinfo(void)
 {
   uint64 dst_virtual;
