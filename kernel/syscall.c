@@ -176,5 +176,5 @@ syscall(void)
    if (p->traced & (1 << num)) {
     printf("%d: syscall %s -> %ld\n",
            p->pid, syscallnames[num], (unsigned long)p->trapframe->a0);
-}
+    }
 }
